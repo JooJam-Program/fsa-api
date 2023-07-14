@@ -52,13 +52,39 @@ class MediaObject
     #[ApiProperty(types: ['https://schema.org/contentUrl'])]
     #[Groups(['media_object:read'])]
     public ?string $contentUrl = null;
+
     #[Vich\UploadableField(mapping: "media_object", fileNameProperty: "filePath")]
     #[Assert\NotNull(groups: ['media_object_create'])]
     public ?File $file = null;
+
     #[ORM\Column(nullable: true)]
     public ?string $filePath = null;
+
+    #[ORM\Column(type: "string", nullable: true)]
+    public ?string $batchId = null;
+
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['media_object:read'])]
+    private ?string $generatedText = null;
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFilePath(): ?string
+    {
+        return $this->filePath;
+    }
+
+    public function getGeneratedText(): ?string
+    {
+        return $this->generatedText;
+    }
+
+    public function setGeneratedText(?string $generatedText): self
+    {
+        $this->generatedText = $generatedText;
+
+        return $this;
     }
 }
